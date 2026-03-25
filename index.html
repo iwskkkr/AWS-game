@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWSセキュリティホール発見ゲーム</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>AWSセキュリティホール発見ゲーム</h1>
+    <p>構成図からセキュリティホールをクリックして発見してください！</p>
+    
+    <div id="aws-cloud" class="aws-cloud">
+        <div class="user-icon">
+            <img src="img/user.png" alt="ユーザーアイコン" onclick="showDetail('ユーザー')">
+        </div>
+        <div class="developer-icon">
+            <img src="img/developer.png" alt="開発者アイコン" onclick="showDetail('開発者')">
+        </div>
+        
+        <div class="region">
+            <h3>Region</h3>
+            <div class="az">
+                <h4>AZ</h4>
+                <div class="vpc">
+                    <h5>VPC</h5>
+                    <div class="iam-icon">
+                        <img src="img/iam.png" alt="IAMロール" onclick="showDetail('IAMロール')">
+                    </div>
+                    <div class="s3-icon">
+                        <img src="img/s3.png" alt="S3" onclick="checkSecurityHole('S3がPublic設定')">
+                    </div>
+                    <div class="subnet public-subnet">
+                        <h6>Public Subnet</h6>
+                        <div class="ec2-icon">
+                            <img src="img/ec2.png" alt="EC2" onclick="checkSecurityHole('EC2セキュリティグループが0.0.0.0/0')">
+                        </div>
+                        <div class="rds-icon">
+                            <img src="img/rds.png" alt="RDS" onclick="showDetail('RDS')">
+                        </div>
+                    </div>
+                    <div class="subnet private-subnet">
+                        <h6>Private Subnet</h6>
+                        <div class="ec2-icon">
+                            <img src="img/ec2.png" alt="EC2" onclick="showDetail('EC2')">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p id="detail-text"></p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

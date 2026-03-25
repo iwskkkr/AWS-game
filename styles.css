@@ -1,0 +1,139 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    text-align: center;
+}
+
+.aws-cloud {
+    width: 100%;
+    height: 600px;
+    border: 2px solid #333;
+    background-color: #e6f7ff;
+    position: relative;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-icon, .developer-icon {
+    position: absolute;
+    top: -50px;
+}
+
+.user-icon {
+    left: 10%;
+}
+
+.developer-icon {
+    right: 10%;
+}
+
+.region {
+    width: 90%;
+    height: 80%;
+    border: 2px dashed #666;
+    background-color: #fff3cd;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.az {
+    width: 90%;
+    height: 80%;
+    border: 2px solid #999;
+    background-color: #d4edda;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.vpc {
+    width: 90%;
+    height: 80%;
+    border: 2px solid #777;
+    background-color: #f8d7da;
+    margin: 10px;
+    position: relative;
+}
+
+.iam-icon, .s3-icon {
+    position: absolute;
+    top: 10px;
+}
+
+.iam-icon {
+    left: 10px;
+}
+
+.s3-icon {
+    right: 10px;
+}
+
+.subnet {
+    width: 40%;
+    height: 60%;
+    border: 2px solid #555;
+    background-color: #cce5ff;
+    margin: 10px;
+    position: absolute;
+    bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.public-subnet {
+    left: 10px;
+}
+
+.private-subnet {
+    right: 10px;
+}
+
+img {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
