@@ -7,56 +7,91 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>AWSセキュリティホール発見ゲーム</h1>
-    <p>構成図からセキュリティホールをクリックして発見してください！</p>
-    
-    <div id="aws-cloud" class="aws-cloud">
-        <div class="user-icon">
-            <img src="img/user.png" alt="ユーザーアイコン" onclick="showDetail('ユーザー')">
-        </div>
-        <div class="developer-icon">
-            <img src="img/developer.png" alt="開発者アイコン" onclick="showDetail('開発者')">
-        </div>
-        
-        <div class="region">
-            <h3>Region</h3>
-            <div class="az">
-                <h4>AZ</h4>
-                <div class="vpc">
-                    <h5>VPC</h5>
-                    <div class="iam-icon">
-                        <img src="img/iam.png" alt="IAMロール" onclick="showDetail('IAMロール')">
+    <header class="page-header">
+        <h1>AWSセキュリティホール発見ゲーム</h1>
+        <p>このページでは、AWS構成図の中からセキュリティホールを発見します。リソースをクリックして詳細を表示！セキュリティホールを見つけよう！</p>
+    </header>
+
+    <main class="main-content">
+        <div id="aws-cloud" class="aws-cloud">
+            <div class="box-title">
+                <img src="img/aws.png" alt="AWS Cloud" class="box-icon">
+                <span>AWS Cloud</span>
+            </div>
+            <div class="user-icon">
+                <img src="img/user.png" alt="ユーザーアイコン" onclick="showFloatingWindow('ユーザー', event)">
+            </div>
+            <div class="developer-icon">
+                <img src="img/developer.png" alt="開発者アイコン" onclick="showFloatingWindow('開発者', event)">
+            </div>
+
+            <div class="region">
+                <div class="box-title">
+                    <img src="img/region.png" alt="Region" class="box-icon">
+                    <span>Region</span>
+                </div>
+                <div class="az">
+                    <div class="box-title">
+                        <span>AZ</span>
                     </div>
-                    <div class="s3-icon">
-                        <img src="img/s3.png" alt="S3" onclick="checkSecurityHole('S3がPublic設定')">
-                    </div>
-                    <div class="subnet public-subnet">
-                        <h6>Public Subnet</h6>
-                        <div class="ec2-icon">
-                            <img src="img/ec2.png" alt="EC2" onclick="checkSecurityHole('EC2セキュリティグループが0.0.0.0/0')">
+                    <div class="vpc">
+                        <div class="box-title">
+                            <img src="img/vpc.png" alt="VPC" class="box-icon">
+                            <span>VPC</span>
                         </div>
-                        <div class="rds-icon">
-                            <img src="img/rds.png" alt="RDS" onclick="showDetail('RDS')">
+                        <div class="igw-icon">
+                            <img src="img/igw.png" alt="Internet Gateway" onclick="showFloatingWindow('IGW', event)">
                         </div>
-                    </div>
-                    <div class="subnet private-subnet">
-                        <h6>Private Subnet</h6>
-                        <div class="ec2-icon">
-                            <img src="img/ec2.png" alt="EC2" onclick="showDetail('EC2')">
+                        <div class="nat-gw-icon">
+                            <img src="img/nat-gw.png" alt="NAT Gateway" onclick="showFloatingWindow('NAT-GW', event)">
+                        </div>
+                        <div class="iam-icon">
+                            <img src="img/iam.png" alt="IAMロール" onclick="showFloatingWindow('IAMロール', event)">
+                        </div>
+                        <div class="s3-icon">
+                            <img src="img/s3.png" alt="S3" onclick="showFloatingWindow('S3', event)">
+                        </div>
+                        <div class="subnet public-subnet">
+                            <div class="box-title">
+                                <img src="img/public-subnet.png" alt="Public Subnet" class="box-icon">
+                                <span>Public Subnet</span>
+                            </div>
+                            <div class="ec2-icon">
+                                <img src="img/ec2.png" alt="EC2 (Public)" onclick="showFloatingWindow('EC2-公開', event)">
+                            </div>
+                            <div class="rds-icon">
+                                <img src="img/rds.png" alt="RDS" onclick="showFloatingWindow('RDS', event)">
+                            </div>
+                        </div>
+                        <div class="subnet private-subnet">
+                            <div class="box-title">
+                                <img src="img/private-subnet.png" alt="Private Subnet" class="box-icon">
+                                <span>Private Subnet</span>
+                            </div>
+                            <div class="ec2-icon private">
+                                <img src="img/ec2.png" alt="EC2 (Private)" onclick="showFloatingWindow('EC2-非公開', event)">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div id="detail-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <p id="detail-text"></p>
+        <div id="floating-window" class="floating-window hidden">
+            <div class="floating-header">
+                <span id="floating-title">詳細</span>
+                <button class="floating-close" onclick="closeFloatingWindow()">×</button>
+            </div>
+            <div id="floating-body" class="floating-body">
+                <p>サービスの説明と設定情報はここに表示されます。</p>
+                <p>（内容は後で記載してください）</p>
+            </div>
         </div>
-    </div>
-    
+    </main>
+
+    <footer class="page-footer">
+        <p>フッター（スペース確保）</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
