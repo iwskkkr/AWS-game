@@ -2,6 +2,23 @@ const floatingWindow = document.getElementById('floating-window');
 const floatingTitle = document.getElementById('floating-title');
 const floatingBody = document.getElementById('floating-body');
 
+const modalOverlay = document.getElementById('modal-overlay');
+const modalBody = document.getElementById('modal-body');
+
+function foundHole(type) {
+    let content = '';
+
+    modalBody.innerHTML = content;
+    modalOverlay.classList.remove('hidden');
+}
+
+function closeModal() {
+    modalOverlay.classList.add('hidden');
+}
+
+/* =========================
+   各リソースの説明
+========================= */
 const details = {
     'ユーザー': {
         title: 'ユーザー',
@@ -10,7 +27,7 @@ const details = {
     },
     '開発者': {
         title: '開発者',
-        description: '開発者: システム構成を管理するユーザー。',
+        description: '開発者: システム構成を構築・管理するユーザー。',
         settings: ''
     },
     'IGW': {
@@ -20,63 +37,119 @@ const details = {
     },
     'NAT-GW': {
         title: 'NAT Gateway',
-        description: 'NAT Gateway: プライベートサブネットからインターネットへのアウトバウンド通信を可能にする。',
-        settings: '設定例<br>・Subnet: Private Subnet<br>・Elastic IP: 54.123.45.67'
+        description: 'NAT ゲートウェイは、プライベートサブネットから外部への通信を可能にします。',
+        settings: 'Subnet: Public Subnet<br>・Elastic IP: x.x.x.x'
     },
     'IAMロール': {
         title: 'IAMロール',
-        description: 'IAMロール: AWSリソースへのアクセス権限を管理。不要なロールはリスクです。',
-        settings: '設定例<br>・Role Name: EC2Role<br>・Policies: AmazonS3ReadOnlyAccess'
+        description: 'IAMロール: AWSリソースへのアクセス権限を管理。',
+        settings: `
+        設定例<br>
+        ・Role Name: EC2Role<br>
+        ・Policies: 
+        <span class="vuln" onclick="foundHole('iam-overprivilege')">AmazonS3FullAccess</span>
+        `
     },
     'S3': {
         title: 'S3',
-        description: 'S3: オブジェクトストレージ。公開設定に注意。',
-        settings: '設定例<br>・Bucket Name: my-bucket<br>・Public Access: Block all public access (推奨)'
+        description: 'S3: オブジェクトストレージ。',
+        settings: `
+        設定例<br>
+        ・Bucket Name: my-bucket<br>
+        ・Public Access: 
+        <span class="vuln" onclick="foundHole('s3-public')">ON</span>
+        `
     },
     'EC2-公開': {
         title: 'EC2 (Public)',
-        description: 'クラウドコンピューティングサービス。仮想サーバを自由に構築・利用できる。',
-        settings: '<hr style="border: 1px solid #ccc;"><strong>AMI</strong><br>RedHat Enterprise 9.5<hr style="border: 1px solid #ccc;"><strong>セキュリティグループ</strong><br>インバウンドルール: 0.0.0.0/0<br>アウトバウンドルール: 0.0.0.0/0<hr style="border: 1px solid #ccc;"><strong>インスタンスタイプ</strong><br>t3.micro'
+        description: '仮想サーバ。',
+        settings: `
+        <hr>
+        <strong>AMI</strong><br>
+        RedHat Enterprise 9.5
+        <hr>
+        <strong>セキュリティグループ</strong><br>
+        インバウンドルール: 
+        <span class="vuln" onclick="foundHole('ec2-sg')">0.0.0.0/0</span><br>
+        アウトバウンドルール: 0.0.0.0/0
+        <hr>
+        <strong>インスタンスタイプ</strong><br>
+        t3.micro
+        `
     },
     'EC2-非公開': {
         title: 'EC2 (Private)',
-        description: 'EC2: プライベートサブネット。内部アクセス用。',
-        settings: '設定例<br>・AMI: Amazon Linux 2<br>・Security Group: PrivateSG<br>・Instance Type: t3.small'
+        description: '内部用EC2。',
+        settings: '設定例<br>・AMI: Amazon Linux 2'
     },
     'RDS': {
         title: 'RDS',
-        description: 'RDS: マネージドDB。ネットワーク設定を確認。',
-        settings: '設定例<br>・Engine: MySQL 8.0<br>・DB Instance: db-instance<br>・Security Group: RDSSG'
+        description: 'マネージドDB。',
+        settings: '設定例<br>・Engine: MySQL 8.0'
     }
 };
 
-const securityHoles = {
-    'S3': 'S3がPublic設定',
-    'EC2-公開': 'EC2セキュリティグループが0.0.0.0/0',
-    'IAMロール': '不必要なIAMロール'
+/* =========================
+   脆弱性データ
+========================= */
+const vulnerabilities = {
+    'ec2-sg': {
+        title: '🎯 セキュリティホール発見！！',
+        content: `
+        <p><strong>問題点：</strong><br>
+        インバウンドルールが <b>0.0.0.0/0</b></p>
+
+        <p><strong>なぜ危険？：</strong><br>
+        全世界からアクセス可能</p>
+
+        <p><strong>対策：</strong><br>
+        IP制限をかける</p>
+        `
+    },
+    's3-public': {
+        title: '🎯 セキュリティホール発見！！',
+        content: `
+        <p><strong>問題点：</strong><br>
+        S3がパブリック公開</p>
+
+        <p><strong>なぜ危険？：</strong><br>
+        誰でも閲覧可能</p>
+
+        <p><strong>対策：</strong><br>
+        Block Public Accessを有効化</p>
+        `
+    },
+    'iam-overprivilege': {
+        title: '🎯 セキュリティホール発見！！',
+        content: `
+        <p><strong>問題点：</strong><br>
+        権限が強すぎる</p>
+
+        <p><strong>なぜ危険？：</strong><br>
+        被害拡大のリスク</p>
+
+        <p><strong>対策：</strong><br>
+        最小権限にする</p>
+        `
+    }
 };
 
+/* =========================
+   フローティング表示
+========================= */
 function showFloatingWindow(resource, event) {
-    const info = details[resource] || { title: resource, description: '詳細情報を設定してください。', settings: '' };
-    floatingTitle.textContent = info.title;
-    let bodyHtml = `<p>${info.description}</p>`;
+    const info = details[resource] || { title: resource, description: '', settings: '' };
 
+    floatingTitle.textContent = info.title;
+
+    let bodyHtml = `<p>${info.description}</p>`;
     if (info.settings) {
         bodyHtml += `<div>${info.settings}</div>`;
-    }
-
-    // セキュリティホール判定と補助文
-    if (securityHoles[resource]) {
-        bodyHtml += `<p style="color:#c00;font-weight:bold;">※セキュリティホール候補: ${securityHoles[resource]}</p>`;
-        bodyHtml += `<button onclick="checkSecurityHole('${resource}')">セキュリティホールか確認</button>`;
-    } else {
-        bodyHtml += '<p>現在、明確なセキュリティホールは設定されていません。</p>';
     }
 
     floatingBody.innerHTML = bodyHtml;
     floatingWindow.classList.remove('hidden');
 
-    // 位置をクリックしたアイコンの近くに設定
     if (event) {
         const rect = event.target.getBoundingClientRect();
         floatingWindow.style.left = `${rect.left + window.scrollX + 70}px`;
@@ -85,22 +158,46 @@ function showFloatingWindow(resource, event) {
     }
 }
 
-function checkSecurityHole(resource) {
-    if (securityHoles[resource]) {
-        alert(`正解！セキュリティホール発見: ${securityHoles[resource]}`);
-    } else {
-        alert('これはセキュリティホールではありません。');
-    }
-    closeFloatingWindow();
+/* =========================
+   脆弱性発見
+========================= */
+function foundHole(type) {
+    const vuln = vulnerabilities[type];
+    if (!vuln) return;
+
+    document.querySelector('.modal-title').textContent = vuln.title;
+    modalBody.innerHTML = vuln.content;
+
+    modalOverlay.classList.remove('hidden');
 }
 
+/* =========================
+   モーダル閉じる
+========================= */
+function closeModal() {
+    modalOverlay.classList.add('hidden');
+}
+
+/* =========================
+   外クリックで閉じる
+========================= */
+window.addEventListener('click', (event) => {
+    if (
+        !floatingWindow.classList.contains('hidden') &&
+        !floatingWindow.contains(event.target) &&
+        event.target.closest('img') == null
+    ) {
+        closeFloatingWindow();
+    }
+
+    if (event.target === modalOverlay) {
+        closeModal();
+    }
+});
+
+/* =========================
+   フローティング閉じる
+========================= */
 function closeFloatingWindow() {
     floatingWindow.classList.add('hidden');
 }
-
-// クリックで外側を閉じる（追加のモーダル対応は今後）
-window.addEventListener('click', (event) => {
-    if (!floatingWindow.classList.contains('hidden') && !floatingWindow.contains(event.target) && event.target.closest('img') == null) {
-        closeFloatingWindow();
-    }
-});
