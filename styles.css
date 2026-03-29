@@ -42,7 +42,7 @@ body {
 
 .aws-cloud {
     width: 100%;
-    height: 650px;
+    height: 800px;
     border: 2px solid #000;
     background-color: transparent;
     position: relative;
@@ -75,49 +75,70 @@ body {
     position: relative;
 }
 
-.az {
-    width: 88%;
-    height: 88%;
-    border: 2px dotted #87f6fa;
+.az-1a {
+    position: absolute;
+    top: 50px;
+    left: 80px;
+    width: 35%;
+    height: 90%;
+
+    border: 2px dashed #c5f8fa; /* 水色の点線 */
     background-color: transparent;
-    margin: 30px auto;
-    position: relative;
+
+    pointer-events: none; /* クリック無効（重要） */
+}
+
+.az-1c {
+    position: absolute;
+    top: 50px;
+    right: 80px;
+    width: 35%;
+    height: 90%;
+
+    border: 2px dashed #c5f8fa; /* 水色の点線 */
+    background-color: transparent;
+
+    pointer-events: none; /* クリック無効（重要） */
 }
 
 .vpc {
     width: 88%;
-    height: 86%;
+    height: 80%;
     border: 2px solid #9966FF;
     background-color: transparent;
     margin: 40px auto;
     position: relative;
+    top: 50px;
 }
 
 .subnet {
-    width: 42%;
+    width: 35%;
     height: 38%;
     border: none;
     background-color: transparent;
     position: absolute;
-    bottom: 20px;
     padding-top: 24px;
     margin: 10px;
 }
 
 .public-subnet {
     background-color: #defcde;
+    top: 30px;
+    left: 30px;
 }
 
 .private-subnet {
     background-color: #d3f9fa;
+    bottom: 20px;
+    left: 30px;
 }
 
 .public-subnet .nat-gw-icon {
     position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(50%, 50%);
+    bottom: 5px;
+    right: 5px;
 }
+
 .private-subnet {
     right: 14px;
 }
@@ -151,22 +172,20 @@ body {
 
 .public-subnet .ec2-icon {
     position: absolute;
-    top: 50%;
-    left: 40%;
-    transform: translate(-50%, -50%);
+    top: 70px;
+    left: 80px;
 }
 
 .public-subnet .rds-icon {
     position: absolute;
-    top: 50%;
-    left: 60%;
-    transform: translate(-50%, -50%);
+    top: 70px;
+    right: 50px;
 }
 
 .private-subnet .ec2-icon {
     left: 50%;
     transform: translateX(-50%);
-    top: 30px;
+    top: 70px;
 }
 
 .user-icon,
@@ -199,7 +218,7 @@ img {
     position: absolute;
     right: 30px;
     bottom: 30px;
-    width: 320px;
+    width: max-content;
     height: auto;
     background: #fff;
     border: 1px solid #888;

@@ -30,6 +30,11 @@ const details = {
         description: '開発者: システム構成を構築・管理するユーザー。',
         settings: ''
     },
+    'VPC': {
+        title: 'VPC',
+        description: 'VPC: クラウド上の論理的なネットワーク。',
+        settings: ''
+    },
     'IGW': {
         title: 'Internet Gateway',
         description: 'Internet Gateway: VPCとインターネット間の通信を可能にするゲートウェイ。',
@@ -64,17 +69,18 @@ const details = {
         title: 'EC2 (Public)',
         description: '仮想サーバ。',
         settings: `
-        <hr>
+        <hr><hr>
         <strong>AMI</strong><br>
         RedHat Enterprise 9.5
         <hr>
         <strong>セキュリティグループ</strong><br>
-        インバウンドルール: 
-        <span class="vuln" onclick="foundHole('ec2-sg')">0.0.0.0/0</span><br>
-        アウトバウンドルール: 0.0.0.0/0
+        ▼インバウンドルール<br>
+        [ポート]22&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[プロトコル]TCP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ソース]<span class="vuln" onclick="foundHole('ec2-sg')">0.0.0.0/0</span><br>
+        ▼アウトバウンドルール<br>
+        [ポート]すべて&nbsp;&nbsp;&nbsp;[プロトコル]すべて&nbsp;&nbsp;&nbsp;[送信先]0.0.0.0/0
         <hr>
         <strong>インスタンスタイプ</strong><br>
-        t3.micro
+        t3a.xlarge
         `
     },
     'EC2-非公開': {
